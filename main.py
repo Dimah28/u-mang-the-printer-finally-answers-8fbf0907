@@ -23,6 +23,15 @@ def reject(message):
     raise SystemExit(message)
 
 
+def check_shape(text):
+    """Check the line's shape: one line, 1 to LIMIT characters."""
+    if "\n" in text or "\r" in text:
+        reject("line must fit on one line")
+    if len(text) > LIMIT:
+        reject(f"line is {len(text)} characters, over the {LIMIT} limit")
+    return text
+
+
 def validate_line(raw):
     """Run the bounty gate over the line; return the cleaned text.
 
@@ -31,11 +40,7 @@ def validate_line(raw):
     text = raw.strip()
     if not text:
         reject("line is empty or only whitespace")
-    if "\n" in text or "\r" in text:
-        reject("line must fit on one line")
-    if len(text) > LIMIT:
-        reject(f"line is {len(text)} characters, over the {LIMIT} limit")
-    return text
+    return check_shape(text)
 
 
 def main():
